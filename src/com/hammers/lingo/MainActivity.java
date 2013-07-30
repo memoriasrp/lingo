@@ -68,57 +68,6 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	}
 
-	//	private double onlyFinalStates() {
-	//		int totalNofStates = Binomial.binom(realFieldsLeft, nrOfBallsLeft); 
-	//		int totalLingoCombinations = 0;
-	//		int[] indexTracker = new int[nrOfBallsLeft];
-	//		for(int i = 0; i < nrOfBallsLeft; i ++)
-	//		{
-	//			indexTracker[i] = i;
-	//		}
-	//		int changingIndex = nrOfBallsLeft - 1;
-	//
-	//		while(changingIndex >= 0)
-	//		{
-	//			Boolean indexesChanged = false;
-	//			getCombinationForNumberOfBalls(nrOfBallsLeft, indexTracker);
-	//			int n=0,m=0;
-	//			for (int k = 0; k<5; k++) {
-	//				for (int l = 0; l<5; l++) {
-	//					while(!virtualCardBoolean[k][l]&&m<indexTracker.length) {
-	//						if(indexTracker[m]==n) {
-	//							virtualCardBoolean[k][l] = true;
-	//							m++;
-	//						}
-	//						n++;
-	//					}
-	//				}
-	//			}
-	//			totalLingoCombinations += hasLingo(virtualCardBoolean) ? 1 : 0;
-	//			resetVirtualCard();
-	//
-	//			while(!indexesChanged && changingIndex >= 0)
-	//			{
-	//				indexTracker[changingIndex]++;
-	//				if(indexTracker[changingIndex] < 16 - ((indexTracker.length -1) - changingIndex))
-	//				{
-	//					for(int j = changingIndex; j < indexTracker.length; j++)
-	//					{
-	//						if(j != changingIndex)
-	//							indexTracker[j] = indexTracker[j-1] + 1;
-	//					}
-	//					indexesChanged = true;
-	//					changingIndex = nrOfBallsLeft - 1;
-	//				}
-	//				else
-	//				{
-	//					changingIndex--;
-	//				}
-	//			}
-	//		}
-	//		return totalLingoCombinations / totalNofStates;
-	//	}
-
 	public static Ball[] getCombinationForNumberOfBalls(int numberOfBalls, int[] indexArray)
 	{
 		Ball[] ballCombination = new Ball[numberOfBalls];
@@ -131,74 +80,6 @@ public class MainActivity extends Activity implements OnClickListener{
 		return ballCombination;
 	}
 
-	//	public double allSequincesAndFinalStates() {
-	//		double result = 0.00;
-	//		int virtualNrOfBalls = nrOfBallsLeft;
-	//
-	//		initializeRealCardBoolean();
-	//		resetVirtualCard();
-	//
-	//		if(hasLingo(realCardBoolean)) {
-	//			result = 100.0;
-	//		} else {
-	//			if (virtualNrOfBalls > 0) {
-	//				result = 100.0 * placeBall(virtualCardBoolean, virtualNrOfBalls, realFieldsLeft);
-	//			} else {
-	//				result = 0.0;
-	//			}
-	//		}
-	//		return result;
-	//	}
-
-	//	private double placeBall(boolean[][] virtualCardBoolean, int nofBallsLeft, int nofFieldsLeft) {
-	//		double result = 0.0;
-	//		double frac = 1.0 / (double) (nofFieldsLeft);
-	//		for (int i = 0; i<5; i++) {
-	//			for (int j = 0; j<5; j++) {
-	//				if(!virtualCardBoolean[i][j]) {
-	//					virtualCardBoolean[i][j] = true;
-	//					nofBallsLeft = nofBallsLeft - 1;
-	//					nofFieldsLeft = nofFieldsLeft - 1;
-	//					if(hasLingo(virtualCardBoolean)) {
-	//						result = result + frac;
-	//					} else {
-	//						if (nofBallsLeft > 0) {							
-	//							double res = placeBall(virtualCardBoolean, nofBallsLeft, nofFieldsLeft);
-	//							result = result + (frac * res);
-	//						}
-	//					}
-	//					virtualCardBoolean[i][j] = false;
-	//					nofBallsLeft = nofBallsLeft + 1;
-	//					nofFieldsLeft = nofFieldsLeft + 1;
-	//				}
-	//			}
-	//		}
-	//		return result;
-	//	}
-
-	//	private boolean hasLingo(boolean testCardBoolean[][]) {
-	//		boolean result = false;
-	//		if (testCardBoolean[0][0] && testCardBoolean[1][1] && testCardBoolean[2][2] && testCardBoolean[3][3] && testCardBoolean[4][4]) {
-	//			result = true;
-	//		}
-	//		if (testCardBoolean[4][0] && testCardBoolean[3][1] && testCardBoolean[2][2] && testCardBoolean[1][3] && testCardBoolean[0][4]) {
-	//			result = true;
-	//		}
-	//		if (!result) {
-	//			for (int i=0;i<5;i++) {
-	//				if (testCardBoolean[i][0] && testCardBoolean[i][1] && testCardBoolean[i][2] && testCardBoolean[i][3] && testCardBoolean[i][4]) {
-	//					result = true;
-	//					break;
-	//				}
-	//				if (testCardBoolean[0][i] && testCardBoolean[1][i] && testCardBoolean[2][i] && testCardBoolean[3][i] && testCardBoolean[4][i]) {
-	//					result = true;
-	//					break;
-	//				}
-	//			}
-	//		}
-	//		return result;
-	//	}
-
 	public void onClick(View v) {
 		if (v instanceof ToggleButton) {
 			if (((ToggleButton) v).isChecked()) {
@@ -206,7 +87,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					nrOfBallsLeft--;
 				}	
 			} else {
-				//nrOfBallsLeft++;
+				nrOfBallsLeft++;
 			}
 		} else {
 			if(v.getId()==R.id.button1) {
@@ -221,8 +102,10 @@ public class MainActivity extends Activity implements OnClickListener{
 			}	
 		}
 		nofBallsText.setText(String.valueOf(nrOfBallsLeft));
+//		double oldProb = Double.parseDouble(lingoProbText.getText().toString().);
 		lingoProbText.setText(roundTwoDecimals(binomialMethod()) + "%");
-		//		System.out.print(roundTwoDecimals(allSequincesAndFinalStates()) + "%");
+//		double newProb = Double.parseDouble(lingoProbText.getText().toString());
+		
 	}
 
 	private double binomialMethod() {
@@ -293,7 +176,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		if(!isLingo)
 			isLingo = checkColumnForLingo(virtualCardBoolean);
 		if(!isLingo)
-			checkDiagonalForLingo(virtualCardBoolean);
+			isLingo = checkDiagonalForLingo(virtualCardBoolean);
 
 		if (ballCombination != null) {
 			for(Ball ball : ballCombination)
@@ -331,7 +214,9 @@ public class MainActivity extends Activity implements OnClickListener{
 
 	public static Boolean checkDiagonalForLingo(boolean[][] lingoMap)
 	{
-		return (lingoMap[0][0] && lingoMap[1][1] && lingoMap[2][2] && lingoMap[3][3] && lingoMap[4][4]) || (lingoMap[0][4] && lingoMap[1][3] && lingoMap[2][2] && lingoMap[3][1] && lingoMap[4][0]);
+		boolean res = (lingoMap[0][0] && lingoMap[1][1] && lingoMap[2][2] && lingoMap[3][3] && lingoMap[4][4]);
+		boolean re2 = (lingoMap[0][4] && lingoMap[1][3] && lingoMap[2][2] && lingoMap[3][1] && lingoMap[4][0]);
+		return  res || re2;
 	}
 
 	public static void createBalls()
