@@ -1,6 +1,7 @@
 package com.hammers.lingo;
 
 import java.text.DecimalFormat;
+import com.newrelic.agent.android.NewRelic;
 import java.util.ArrayList;
 
 import android.os.Bundle;
@@ -10,22 +11,33 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.ViewSwitcher;
 
 public class MainActivity extends Activity implements OnClickListener{
 
 	private int nrOfBallsLeft = 0;
 	private TextView nofBallsText, lingoProbText; 
 	private boolean realCardBoolean[][] = new boolean[5][5];
+	private ViewSwitcher viewSwitcher;
+	private View oddView;
+	private View evenView;
 	private static boolean virtualCardBoolean[][] = new boolean[5][5];
 	private static ArrayList<Ball> balls = new ArrayList<Ball>();
 	private static int numberOfCombinations;
+	private Boolean isOdd = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		NewRelic.withApplicationToken(
+				"AA06831aca5e269634de2e51ce1c918f60951935db"
+				).start(this.getApplication());
 		setContentView(R.layout.activity_main);
 		nofBallsText = (TextView) findViewById(R.id.textView2);
 		lingoProbText = (TextView) findViewById(R.id.textView3);
+		viewSwitcher =   (ViewSwitcher) findViewById(R.id.viewSwitcher);
+        oddView= findViewById(R.id.odd);
+        evenView = findViewById(R.id.even);
 		initializeRealCardBoolean();
 	}
 
@@ -46,9 +58,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	}
 
 	private void initializeRealCardBoolean() {
+		String odd = ""; 
+		if (isOdd) {
+			odd = "0";
+		}
 		for (int i = 0; i<5; i++) {
 			for (int j = 0; j<5; j++) {
-				String buttonID = "ToggleButton" + i + j;
+				String buttonID = "ToggleButton" + i + j + odd;
 				int resID = getResources().getIdentifier(buttonID, "id", "com.hammers.lingo");
 				ToggleButton tb = (ToggleButton) findViewById(resID);
 				if (tb.isChecked()) {
@@ -97,9 +113,19 @@ public class MainActivity extends Activity implements OnClickListener{
 					Toast toast = Toast.makeText(MainActivity.this, "Kan niet negatief zijn", Toast.LENGTH_SHORT);
 					toast.show();
 				}
-			} else {
+			} else if (v.getId()==R.id.button2){				
 				nrOfBallsLeft++;
-			}	
+			} else if (v.getId()==R.id.evenBtn) {
+				if (viewSwitcher.getCurrentView() == oddView){
+					viewSwitcher.showNext();
+					isOdd = false;
+                } 
+			} else if (v.getId()==R.id.oddBtn) {
+				if (viewSwitcher.getCurrentView() == evenView){
+					viewSwitcher.showPrevious(); 
+					isOdd = true;
+                } 
+			}
 		}
 		nofBallsText.setText(String.valueOf(nrOfBallsLeft));
 //		double oldProb = Double.parseDouble(lingoProbText.getText().toString().);

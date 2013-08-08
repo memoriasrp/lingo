@@ -10,5 +10,7 @@
     <string name="plus_one">+1</string>
     <string name="kans_op_lingo">Kans op Lingo:</string>
     <string name="zero_percentage">0%</string>
+    <string name="even">Even</string>
+    <string name="odd">Oneven</string>
 
 </resources>
